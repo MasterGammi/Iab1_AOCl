@@ -55,14 +55,6 @@ namespace WindowsFormsApp1
             imageBox2.Image = grayImage.Resize(640, 480, Inter.Linear);
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            double cannyThreshold = 80.0;
-            double cannyThresholdLinking = 40.0;
-            Image<Gray, byte> cannyEdges = sourceImage.Canny(cannyThreshold, cannyThresholdLinking);
-            imageBox2.Image = cannyEdges.Resize(640, 480, Inter.Linear);
-        }
-
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             double cannyThreshold = trackBar1.Value;
@@ -124,9 +116,9 @@ namespace WindowsFormsApp1
             for (int y = 0; y < destImage.Height; y++)
                 for (int x = 0; x < destImage.Width; x++)
                 {
-                    destImage.Data[y, x, 0] = (Byte)(destImage.Data[y, x, 2] * 0.272 + destImage.Data[y, x, 1] * 0.534 + destImage.Data[y, x, 0] * 0.131) ;
-                    destImage.Data[y, x, 1] = (Byte)(destImage.Data[y, x, 2] * 0.349 + destImage.Data[y, x, 1] * 0.686 + destImage.Data[y, x, 0] * 0.168);
-                    destImage.Data[y, x, 2] = (Byte)(destImage.Data[y, x, 2] * 0.393 + destImage.Data[y, x, 1] * 0.769 + destImage.Data[y, x, 0] * 0.189);
+                    destImage.Data[y, x, 0] = (Byte)(destImage.Data[y, x, 2] * 0.1 + destImage.Data[y, x, 1] * 0.534 + destImage.Data[y, x, 0] * 0.131) ;
+                    destImage.Data[y, x, 1] = (Byte)(destImage.Data[y, x, 2] * 0.1 + destImage.Data[y, x, 1] * 0.686 + destImage.Data[y, x, 0] * 0.168);
+                    destImage.Data[y, x, 2] = (Byte)(destImage.Data[y, x, 2] * 0.1 + destImage.Data[y, x, 1] * 0.769 + destImage.Data[y, x, 0] * 0.189);
                 }
 
             imageBox2.Image = destImage.Resize(640, 480, Inter.Linear);
@@ -297,7 +289,7 @@ namespace WindowsFormsApp1
             List<byte> list2 = new List<byte>();
             List<byte> list3 = new List<byte>();
             int sh = 4;
-            int N = 9;
+            int N = 3;
             for (int y = sh; y < image.Height-sh; y++)
                 for(int x = sh; x < image.Width-sh; x++)
                 {
@@ -323,76 +315,8 @@ namespace WindowsFormsApp1
             imageBox2.Image = result.Resize(640, 480, Inter.Linear);
         }
 
-        private void button18_Click(object sender, EventArgs e)
-        {
-            var image = sourceImage;
-            var result = sourceImage.CopyBlank();
+        
 
-            int[,] w = new int[3, 3]
-            {
-                {-1, -1, -1},
-                {-1, 9, -1},
-                {-1, -1, -1}
-            };
-            
-          
-            for (int y = 1; y < image.Height - 1; y++)
-                for (int x = 1; x < image.Width - 1; x++)
-                {
-                    int r = 0;
-
-                    for (int i = -1; i < 2; i++)
-                        for (int j = -1; j < 2; j++)
-                        {
-                            r += image.Data[i + y, j + x, 0] * w[i + 1, j + 1];
-                            r += image.Data[i + y, j + x, 1] * w[i + 1, j + 1];
-                            r += image.Data[i + y, j + x, 2] * w[i + 1, j + 1];
-                        }
-
-                    if (r > 255) r = 255;
-                    if (r < 0) r = 0;
-
-                    result.Data[y, x, 0] = (byte)r;
-                    result.Data[y, x, 1] = (byte)r;
-                    result.Data[y, x, 2] = (byte)r;
-                }
-            imageBox2.Image = result.Resize(640, 480, Inter.Linear);
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            var image = sourceImage;
-            var result = sourceImage.CopyBlank();
-
-            int[,] w = new int[3, 3]
-            {
-                {-4, -2, 0},
-                {-2, 1, 2},
-                {0, 2, 4}
-            };
-
-
-            for (int y = 1; y < image.Height - 1; y++)
-                for (int x = 1; x < image.Width - 1; x++)
-                {
-                    int r = 0;
-
-                    for (int i = -1; i < 2; i++)
-                        for (int j = -1; j < 2; j++)
-                        {
-                            r += image.Data[i + y, j + x, 0] * w[i + 1, j + 1];
-                            r += image.Data[i + y, j + x, 1] * w[i + 1, j + 1];
-                            r += image.Data[i + y, j + x, 2] * w[i + 1, j + 1];
-                        }
-
-                    if (r > 255) r = 255;
-                    if (r < 0) r = 0;
-
-                    result.Data[y, x, 0] = (byte)r;
-                    result.Data[y, x, 1] = (byte)r;
-                    result.Data[y, x, 2] = (byte)r;
-                }
-            imageBox2.Image = result.Resize(640, 480, Inter.Linear);
-        }
+        
     }
 }
